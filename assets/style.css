@@ -192,10 +192,11 @@ a { color: var(--accent); }
 .filterchip.is-unpopulated { border-style: dashed; }
 .filterchip.is-unpopulated .filterchip__count { color: var(--amber); }
 
-/* Country chips show a flag emoji instead of the name — bump size slightly
-   so the flag reads clearly, Slack-reaction style. */
-#countryChips .filterchip { font-size: 1rem; padding: 6px 12px; }
-#countryChips .filterchip__count { font-size: 0.72rem; }
+/* Country chips show a flag emoji instead of the name — sized up well past
+   the text chips so the flag is actually easy to pick out and click. The
+   "All" chip (always first — see renderCountryChips) stays text-sized. */
+#countryChips .filterchip:not(:first-child) { font-size: 1.5rem; padding: 5px 12px; gap: 7px; }
+#countryChips .filterchip:not(:first-child) .filterchip__count { font-size: 0.78rem; }
 
 /* Cert filter reuses .filterchip (see rail block above) — no category
    labels or colors here; that grouping is still visible via the underline
