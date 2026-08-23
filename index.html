@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA Certified — APAC Directory</title>
+<meta name="description" content="A searchable directory of NVIDIA-certified professionals across the Asia-Pacific region, built from public Credly data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <div class="brand">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 2 L29 8 V17 C29 24 23.5 28.5 16 30 C8.5 28.5 3 24 3 17 V8 Z" />
+        <path class="brand__mark-inner" d="M16 8 L16 22 M10 12 L16 8 L22 12" />
+      </svg>
+      <div class="brand__text">
+        <h1>NVIDIA Certified<span>APAC Directory</span></h1>
+      </div>
+    </div>
+    <div class="topbar__stats">
+      <div class="stat">
+        <span class="stat__value" id="statVisible">—</span>
+        <span class="stat__label">shown</span>
+      </div>
+      <div class="stat stat--muted">
+        <span class="stat__value" id="statRegion">—</span>
+        <span class="stat__label">known in region</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="regions" id="regionTabs" aria-label="Filter by sub-region"></nav>
+
+<section class="chiprail" id="countryChips" aria-label="Filter by country"></section>
+
+<main class="content">
+  <div class="controls">
+    <div class="search">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M13.5 13.5 18 18M15.5 9a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"/></svg>
+      <input type="text" id="searchInput" placeholder="Search by name, role, or badge…" autocomplete="off">
+    </div>
+    <div class="controls__right">
+      <label class="k8stoggle">
+        <input type="checkbox" id="k8sFilter">
+        Has Kubernetes certs
+      </label>
+      <label class="sortlabel" for="sortSelect">Sort</label>
+      <select id="sortSelect">
+        <option value="badges-desc" selected>Most NVIDIA badges</option>
+        <option value="date-desc">Newest badge first</option>
+        <option value="date-asc">Oldest badge first</option>
+        <option value="name-asc">Name A–Z</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="emptyState" class="emptystate" hidden>
+    <p class="emptystate__title">No matches</p>
+    <p class="emptystate__body">Try a different name, or clear the search and pick another country.</p>
+  </div>
+
+  <div id="notLoadedState" class="emptystate" hidden>
+    <p class="emptystate__title">Not fetched yet</p>
+    <p class="emptystate__body" id="notLoadedBody"></p>
+    <code class="emptystate__code">node scripts/fetch-data.mjs</code>
+  </div>
+
+  <ul class="people" id="peopleList" role="list"></ul>
+
+  <div class="loadmore" id="loadMoreWrap" hidden>
+    <button id="loadMoreBtn">Show more</button>
+  </div>
+</main>
+
+<footer class="pagefoot">
+  <p>Data pulled from Credly's public NVIDIA earner directory. Not affiliated with or endorsed by NVIDIA or Credly.
+  <a href="https://github.com" id="repoLink" target="_blank" rel="noopener">View source</a>.</p>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

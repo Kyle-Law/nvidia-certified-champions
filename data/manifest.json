@@ -1,0 +1,97 @@
+{
+  "region_name": "Asia-Pacific",
+  "generated_at": "2026-08-23",
+  "source": "Credly NVIDIA Earner Directory (public API, filtered by location)",
+  "organization_id": "be046724-f99a-4626-922e-425eca1efa2e",
+  "note": "count is the total earner count reported by Credly at generation time. populated=true means the per-person records are checked into data/countries/. populated=false means only the count is known so far — run scripts/fetch-data.mjs to pull the full list.",
+  "countries": [
+    {
+      "name": "Malaysia",
+      "slug": "malaysia",
+      "region": "Southeast Asia",
+      "filter_value": "Malaysia",
+      "count": 108,
+      "populated": true
+    },
+    {
+      "name": "Singapore",
+      "slug": "singapore",
+      "region": "Southeast Asia",
+      "filter_value": "Singapore",
+      "count": 396,
+      "populated": true
+    },
+    {
+      "name": "Indonesia",
+      "slug": "indonesia",
+      "region": "Southeast Asia",
+      "filter_value": "Indonesia",
+      "count": 76,
+      "populated": true
+    },
+    {
+      "name": "Thailand",
+      "slug": "thailand",
+      "region": "Southeast Asia",
+      "filter_value": "Thailand",
+      "count": 43,
+      "populated": true
+    },
+    {
+      "name": "Vietnam",
+      "slug": "vietnam",
+      "region": "Southeast Asia",
+      "filter_value": "Vietnam",
+      "count": 149,
+      "populated": true
+    },
+    {
+      "name": "Philippines",
+      "slug": "philippines",
+      "region": "Southeast Asia",
+      "filter_value": "Philippines",
+      "count": 43,
+      "populated": true
+    },
+    {
+      "name": "India",
+      "slug": "india",
+      "region": "South Asia",
+      "filter_value": "India",
+      "count": 2869,
+      "populated": true
+    },
+    {
+      "name": "China",
+      "slug": "china",
+      "region": "East Asia",
+      "filter_value": "China",
+      "count": 1066,
+      "populated": true
+    },
+    {
+      "name": "Japan",
+      "slug": "japan",
+      "region": "East Asia",
+      "filter_value": "Japan",
+      "count": 388,
+      "populated": true
+    },
+    {
+      "name": "South Korea",
+      "slug": "south-korea",
+      "region": "East Asia",
+      "filter_value": "Korea, Republic of",
+      "count": 457,
+      "populated": true
+    },
+    {
+      "name": "Australia",
+      "slug": "australia",
+      "region": "Oceania",
+      "filter_value": "Australia",
+      "count": 249,
+      "populated": true
+    }
+  ]
+}
