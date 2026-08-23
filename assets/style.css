@@ -129,43 +129,93 @@ a { color: var(--accent); }
 }
 
 /* ---------------------------------------------------------
-   Region tabs
+   Filters — country multi-select dropdown + cert chip rail
 --------------------------------------------------------- */
-.regions {
+.filterbar {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 18px 24px 0;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  padding: 16px 24px 0;
 }
-.regiontab {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  background: none;
-  border: 1px solid transparent;
-  color: var(--text-faint);
-  padding: 7px 13px;
-  border-radius: 999px;
+
+.countryDropdown { position: relative; display: inline-block; }
+.countryDropdown__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
-.regiontab:hover { color: var(--text-dim); }
-.regiontab.is-active {
+.countryDropdown__toggle:hover { color: var(--text); border-color: var(--border-soft); background: var(--surface-2); }
+.countryDropdown__toggle::after {
+  content: "▾";
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+.countryDropdown__toggle[aria-expanded="true"]::after { transform: rotate(180deg); display: inline-block; }
+.countryDropdown__badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   color: var(--accent);
-  border-color: var(--accent-dim);
   background: var(--accent-soft);
+  border-radius: 999px;
+  padding: 2px 8px;
 }
 
+.countryDropdown__panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 220px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px;
+  box-shadow: 0 12px 32px #00000060;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.countryDropdown__row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  transition: background 0.12s;
+}
+.countryDropdown__row:hover { background: var(--surface-3); color: var(--text); }
+.countryDropdown__row input { accent-color: var(--accent); cursor: pointer; }
+.countryDropdown__row--all { font-weight: 500; }
+.countryDropdown__flag { font-size: 1.15rem; line-height: 1; }
+.countryDropdown__count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.countryDropdown__row.is-unpopulated .countryDropdown__count { color: var(--amber); }
+.countryDropdown__divider { border: none; border-top: 1px solid var(--border-soft); margin: 4px 2px; }
+
 /* ---------------------------------------------------------
-   Filter chip rail — shared minimal chip style for both the country rail
-   and the cert rail below it. One flowing row, plain bordered pills.
+   Cert filter chip rail — one flowing row, plain bordered pills.
 --------------------------------------------------------- */
 .chiprail {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 10px 24px 8px;
+  padding: 14px 24px 8px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -189,19 +239,6 @@ a { color: var(--accent); }
 .filterchip__count { font-size: 0.68rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 .filterchip.is-active { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-soft); }
 .filterchip.is-active .filterchip__count { color: var(--accent); }
-.filterchip.is-unpopulated { border-style: dashed; }
-.filterchip.is-unpopulated .filterchip__count { color: var(--amber); }
-
-/* Country chips show a flag emoji instead of the name — sized up well past
-   the text chips so the flag is actually easy to pick out and click. The
-   "All" chip (always first — see renderCountryChips) stays text-sized. */
-#countryChips .filterchip:not(:first-child) { font-size: 1.5rem; padding: 5px 12px; gap: 7px; }
-#countryChips .filterchip:not(:first-child) .filterchip__count { font-size: 0.78rem; }
-
-/* Cert filter reuses .filterchip (see rail block above) — no category
-   labels or colors here; that grouping is still visible via the underline
-   on each person's row chips (.certchip.cat-* below). */
-.chiprail--certs { padding-top: 0; padding-bottom: 14px; }
 
 /* ---------------------------------------------------------
    Controls

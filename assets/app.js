@@ -57,8 +57,7 @@
   /** @type {Map<string, any[]>} country slug -> array of person records (with .country/.region attached) */
   const dataCache = new Map();
 
-  let activeRegion = "All";
-  /** @type {Set<string>} country names selected; empty = All (within activeRegion) */
+  /** @type {Set<string>} country names selected; empty = All */
   const selectedCountries = new Set();
   /** @type {Set<string>} cert abbreviations selected (OR'd); empty = no filter */
   const selectedCerts = new Set();
@@ -68,8 +67,10 @@
   let visibleCount = PAGE_SIZE;
 
   const els = {
-    regionTabs: document.getElementById("regionTabs"),
-    countryChips: document.getElementById("countryChips"),
+    countryDropdown: document.getElementById("countryDropdown"),
+    countryDropdownToggle: document.getElementById("countryDropdownToggle"),
+    countryDropdownBadge: document.getElementById("countryDropdownBadge"),
+    countryDropdownPanel: document.getElementById("countryDropdownPanel"),
     certChips: document.getElementById("certChips"),
     searchInput: document.getElementById("searchInput"),
     sortSelect: document.getElementById("sortSelect"),
@@ -88,9 +89,9 @@
 
   async function init() {
     manifest = await fetchJSON("data/manifest.json");
-    renderRegionTabs();
-    renderCountryChips();
+    renderCountryDropdown();
     bindControls();
+    bindCountryDropdownToggle();
     await loadPopulatedCountries();
     renderCertChips(); // needs data loaded to compute per-cert counts
     render();
@@ -119,71 +120,91 @@
     );
   }
 
-  function renderRegionTabs() {
-    const regions = ["All", ...new Set(manifest.countries.map((c) => c.region))];
-    els.regionTabs.innerHTML = "";
-    for (const region of regions) {
-      const btn = document.createElement("button");
-      btn.className = "regiontab" + (region === activeRegion ? " is-active" : "");
-      btn.textContent = region;
-      btn.addEventListener("click", () => {
-        activeRegion = region;
-        selectedCountries.clear();
-        visibleCount = PAGE_SIZE;
-        renderRegionTabs();
-        renderCountryChips();
-        renderCertChips();
-        render();
-      });
-      els.regionTabs.appendChild(btn);
-    }
-  }
+  // Multi-select dropdown: a checkbox row per country (flag + count), plus
+  // an "All countries" row that clears the selection. Panel content is
+  // static once built (just checked state changes), so no full re-render is
+  // needed per toggle — only the badge and checked attributes update.
+  function renderCountryDropdown() {
+    const panel = els.countryDropdownPanel;
+    panel.innerHTML = "";
 
-  function renderCountryChips() {
-    const inRegion =
-      activeRegion === "All"
-        ? manifest.countries
-        : manifest.countries.filter((c) => c.region === activeRegion);
-
-    els.countryChips.innerHTML = "";
-
-    // "All" clears the multi-select back to the whole region.
-    const allChip = makeChip("All", inRegion.reduce((sum, c) => sum + c.count, 0), true, selectedCountries.size === 0);
-    allChip.addEventListener("click", () => {
+    const allRow = document.createElement("label");
+    allRow.className = "countryDropdown__row countryDropdown__row--all";
+    const allCount = manifest.countries.reduce((sum, c) => sum + c.count, 0);
+    allRow.innerHTML = `<input type="checkbox"><span>All countries</span><span class="countryDropdown__count">${allCount.toLocaleString()}</span>`;
+    const allInput = allRow.querySelector("input");
+    allInput.checked = selectedCountries.size === 0;
+    allInput.addEventListener("change", () => {
       selectedCountries.clear();
       visibleCount = PAGE_SIZE;
-      renderCountryChips();
+      syncCountryDropdown();
       renderCertChips();
       render();
     });
-    els.countryChips.appendChild(allChip);
+    panel.appendChild(allRow);
+    panel.appendChild(document.createElement("hr")).className = "countryDropdown__divider";
 
-    // Individual chips toggle in/out of the selection (multi-select) rather
-    // than replacing it — lets you pick e.g. Singapore + Malaysia + Vietnam.
-    for (const c of inRegion) {
-      const chip = makeChip(c.name, c.count, c.populated, selectedCountries.has(c.name), COUNTRY_FLAG[c.name]);
-      chip.addEventListener("click", () => {
-        if (selectedCountries.has(c.name)) selectedCountries.delete(c.name);
-        else selectedCountries.add(c.name);
+    for (const c of manifest.countries) {
+      const row = document.createElement("label");
+      row.className = "countryDropdown__row" + (!c.populated ? " is-unpopulated" : "");
+      row.title = c.name;
+      row.innerHTML = `<input type="checkbox"><span class="countryDropdown__flag">${COUNTRY_FLAG[c.name] || ""}</span><span class="countryDropdown__count">${c.count.toLocaleString()}</span>`;
+      const input = row.querySelector("input");
+      input.checked = selectedCountries.has(c.name);
+      input.addEventListener("change", (e) => {
+        if (e.target.checked) selectedCountries.add(c.name);
+        else selectedCountries.delete(c.name);
         visibleCount = PAGE_SIZE;
-        renderCountryChips();
+        syncCountryDropdown();
         renderCertChips();
         render();
       });
-      els.countryChips.appendChild(chip);
+      panel.appendChild(row);
     }
+
+    updateCountryDropdownBadge();
   }
 
-  // `display` overrides what's shown in place of `label` (e.g. a flag emoji
-  // for country chips) — `label` still drives the tooltip/aria-label so the
-  // chip stays identifiable without relying on the emoji alone.
-  function makeChip(label, count, populated, isActive, display) {
+  // Re-checks each row's checkbox to match `selectedCountries` without
+  // rebuilding the panel (avoids losing focus/scroll while it's open).
+  function syncCountryDropdown() {
+    const rows = els.countryDropdownPanel.querySelectorAll(".countryDropdown__row");
+    rows[0].querySelector("input").checked = selectedCountries.size === 0;
+    for (let i = 1; i < rows.length; i++) {
+      const c = manifest.countries[i - 1];
+      rows[i].querySelector("input").checked = selectedCountries.has(c.name);
+    }
+    updateCountryDropdownBadge();
+  }
+
+  function updateCountryDropdownBadge() {
+    els.countryDropdownBadge.textContent = selectedCountries.size === 0 ? "All" : String(selectedCountries.size);
+  }
+
+  function bindCountryDropdownToggle() {
+    els.countryDropdownToggle.addEventListener("click", () => {
+      const willOpen = els.countryDropdownPanel.hidden;
+      els.countryDropdownPanel.hidden = !willOpen;
+      els.countryDropdownToggle.setAttribute("aria-expanded", String(willOpen));
+    });
+    document.addEventListener("click", (e) => {
+      if (!els.countryDropdown.contains(e.target)) closeCountryDropdown();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeCountryDropdown();
+    });
+  }
+
+  function closeCountryDropdown() {
+    els.countryDropdownPanel.hidden = true;
+    els.countryDropdownToggle.setAttribute("aria-expanded", "false");
+  }
+
+  function makeChip(label, count, isActive) {
     const chip = document.createElement("button");
     chip.type = "button";
-    chip.className = "filterchip" + (isActive ? " is-active" : "") + (!populated ? " is-unpopulated" : "");
-    chip.title = label;
-    chip.setAttribute("aria-label", `${label}, ${count.toLocaleString()}`);
-    chip.innerHTML = `${escapeHTML(display || label)} <span class="filterchip__count">${count.toLocaleString()}</span>`;
+    chip.className = "filterchip" + (isActive ? " is-active" : "");
+    chip.innerHTML = `${escapeHTML(label)} <span class="filterchip__count">${count.toLocaleString()}</span>`;
     return chip;
   }
 
@@ -191,8 +212,8 @@
   // Just the abbreviations — no category labels or per-category colors here;
   // that grouping is still visible via the underline on each person's row
   // chips. CERT_ORDER keeps related certs adjacent for a sensible reading
-  // order even without labels. Counts reflect the current region/country
-  // scope only.
+  // order even without labels. Counts reflect the current country selection
+  // only.
   function renderCertChips() {
     if (!manifest) return; // called once before init's first data load
     const pool = collectRecords().records || [];
@@ -204,7 +225,7 @@
 
     els.certChips.innerHTML = "";
 
-    const allChip = makeChip("All", pool.length, true, selectedCerts.size === 0);
+    const allChip = makeChip("All", pool.length, selectedCerts.size === 0);
     allChip.addEventListener("click", () => {
       selectedCerts.clear();
       visibleCount = PAGE_SIZE;
@@ -214,7 +235,7 @@
     els.certChips.appendChild(allChip);
 
     for (const abbr of CERT_ORDER) {
-      const chip = makeChip(abbr, counts.get(abbr) || 0, true, selectedCerts.has(abbr));
+      const chip = makeChip(abbr, counts.get(abbr) || 0, selectedCerts.has(abbr));
       chip.addEventListener("click", () => {
         if (selectedCerts.has(abbr)) selectedCerts.delete(abbr);
         else selectedCerts.add(abbr);
@@ -248,14 +269,11 @@
   }
 
   function collectRecords() {
-    const scope =
-      activeRegion === "All" ? manifest.countries : manifest.countries.filter((c) => c.region === activeRegion);
-    // Empty selection = every country in the current region scope. A
-    // selection that doesn't match anything in scope (e.g. left over from
-    // switching regions) also falls back to the full scope rather than
-    // showing zero results.
-    const matched = selectedCountries.size === 0 ? [] : scope.filter((c) => selectedCountries.has(c.name));
-    const chosen = matched.length > 0 ? matched : scope;
+    // Empty selection = every country.
+    const chosen =
+      selectedCountries.size === 0
+        ? manifest.countries
+        : manifest.countries.filter((c) => selectedCountries.has(c.name));
 
     // Selection is entirely countries whose per-person data hasn't been
     // fetched yet — show the "not fetched" state instead of an empty list.
@@ -327,7 +345,7 @@
         `${names} ${verb} ${totalCount.toLocaleString()} known NVIDIA badge holders on Credly, ` +
         `but the per-person list hasn't been fetched into this repo yet. Run the fetch script to pull it in:`;
       els.statVisible.textContent = "0";
-      els.statRegion.textContent = regionKnownTotal().toLocaleString();
+      els.statRegion.textContent = apacKnownTotal().toLocaleString();
       return;
     }
 
@@ -345,13 +363,11 @@
     els.loadMoreWrap.hidden = filtered.length <= visibleCount;
 
     els.statVisible.textContent = filtered.length.toLocaleString();
-    els.statRegion.textContent = regionKnownTotal().toLocaleString();
+    els.statRegion.textContent = apacKnownTotal().toLocaleString();
   }
 
-  function regionKnownTotal() {
-    const scope =
-      activeRegion === "All" ? manifest.countries : manifest.countries.filter((c) => c.region === activeRegion);
-    return scope.reduce((sum, c) => sum + c.count, 0);
+  function apacKnownTotal() {
+    return manifest.countries.reduce((sum, c) => sum + c.count, 0);
   }
 
   function renderPerson(p) {

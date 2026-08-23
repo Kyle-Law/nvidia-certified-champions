@@ -30,15 +30,20 @@
       </div>
       <div class="stat stat--muted">
         <span class="stat__value" id="statRegion">—</span>
-        <span class="stat__label">known in region</span>
+        <span class="stat__label">known in APAC</span>
       </div>
     </div>
   </div>
 </header>
 
-<nav class="regions" id="regionTabs" aria-label="Filter by sub-region"></nav>
-
-<section class="chiprail" id="countryChips" aria-label="Filter by country"></section>
+<section class="filterbar" aria-label="Filters">
+  <div class="countryDropdown" id="countryDropdown">
+    <button type="button" class="countryDropdown__toggle" id="countryDropdownToggle" aria-haspopup="true" aria-expanded="false">
+      Select Country <span class="countryDropdown__badge" id="countryDropdownBadge"></span>
+    </button>
+    <div class="countryDropdown__panel" id="countryDropdownPanel" hidden></div>
+  </div>
+</section>
 
 <section class="chiprail chiprail--certs" id="certChips" aria-label="Filter by NVIDIA certification"></section>
 
