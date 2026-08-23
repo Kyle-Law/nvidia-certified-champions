@@ -148,7 +148,7 @@
       const row = document.createElement("label");
       row.className = "countryDropdown__row" + (!c.populated ? " is-unpopulated" : "");
       row.title = c.name;
-      row.innerHTML = `<input type="checkbox"><span class="countryDropdown__flag">${COUNTRY_FLAG[c.name] || ""}</span><span class="countryDropdown__count">${c.count.toLocaleString()}</span>`;
+      row.innerHTML = `<input type="checkbox"><span class="countryDropdown__name">${escapeHTML(c.name)}</span><span class="countryDropdown__flag">${COUNTRY_FLAG[c.name] || ""}</span><span class="countryDropdown__count">${c.count.toLocaleString()}</span>`;
       const input = row.querySelector("input");
       input.checked = selectedCountries.has(c.name);
       input.addEventListener("change", (e) => {

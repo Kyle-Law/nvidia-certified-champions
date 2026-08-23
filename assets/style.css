@@ -184,6 +184,13 @@ a { color: var(--accent); }
   flex-direction: column;
   gap: 1px;
 }
+/* The class rule above's `display: flex` otherwise beats the browser's
+   built-in `[hidden] { display: none }` rule (a class selector outranks a
+   plain attribute selector), which left the panel visible even with the
+   `hidden` attribute set. This forces it closed again when hidden. */
+.countryDropdown__panel[hidden] {
+  display: none;
+}
 .countryDropdown__row {
   display: flex;
   align-items: center;
@@ -198,6 +205,7 @@ a { color: var(--accent); }
 .countryDropdown__row:hover { background: var(--surface-3); color: var(--text); }
 .countryDropdown__row input { accent-color: var(--accent); cursor: pointer; }
 .countryDropdown__row--all { font-weight: 500; }
+.countryDropdown__name { flex: 1; }
 .countryDropdown__flag { font-size: 1.15rem; line-height: 1; }
 .countryDropdown__count {
   margin-left: auto;
