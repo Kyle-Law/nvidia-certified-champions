@@ -36,6 +36,22 @@
   // without a label — mirrors CERT_CATEGORY above.
   const CERT_ORDER = Object.keys(CERT_CATEGORY);
 
+  // Flag emoji shown on each country chip instead of the name (name moves
+  // to the title/aria-label). Keyed by manifest.json's country `name`.
+  const COUNTRY_FLAG = {
+    Malaysia: "🇲🇾",
+    Singapore: "🇸🇬",
+    Indonesia: "🇮🇩",
+    Thailand: "🇹🇭",
+    Vietnam: "🇻🇳",
+    Philippines: "🇵🇭",
+    India: "🇮🇳",
+    China: "🇨🇳",
+    Japan: "🇯🇵",
+    "South Korea": "🇰🇷",
+    Australia: "🇦🇺",
+  };
+
   /** @type {{countries: any[]}} */
   let manifest = null;
   /** @type {Map<string, any[]>} country slug -> array of person records (with .country/.region attached) */
@@ -145,7 +161,7 @@
     // Individual chips toggle in/out of the selection (multi-select) rather
     // than replacing it — lets you pick e.g. Singapore + Malaysia + Vietnam.
     for (const c of inRegion) {
-      const chip = makeChip(c.name, c.count, c.populated, selectedCountries.has(c.name));
+      const chip = makeChip(c.name, c.count, c.populated, selectedCountries.has(c.name), COUNTRY_FLAG[c.name]);
       chip.addEventListener("click", () => {
         if (selectedCountries.has(c.name)) selectedCountries.delete(c.name);
         else selectedCountries.add(c.name);
@@ -158,19 +174,25 @@
     }
   }
 
-  function makeChip(label, count, populated, isActive, extraCls) {
+  // `display` overrides what's shown in place of `label` (e.g. a flag emoji
+  // for country chips) — `label` still drives the tooltip/aria-label so the
+  // chip stays identifiable without relying on the emoji alone.
+  function makeChip(label, count, populated, isActive, display) {
     const chip = document.createElement("button");
-    chip.className =
-      "chip" + (extraCls ? " " + extraCls : "") + (isActive ? " is-active" : "") + (!populated ? " is-unpopulated" : "");
-    chip.innerHTML = `<span class="chip__count">${count.toLocaleString()}</span><span>${label}</span>`;
+    chip.type = "button";
+    chip.className = "filterchip" + (isActive ? " is-active" : "") + (!populated ? " is-unpopulated" : "");
+    chip.title = label;
+    chip.setAttribute("aria-label", `${label}, ${count.toLocaleString()}`);
+    chip.innerHTML = `${escapeHTML(display || label)} <span class="filterchip__count">${count.toLocaleString()}</span>`;
     return chip;
   }
 
   // Minimal filter chips, all in one flowing row (wraps on narrow screens).
-  // A small colored label precedes each category's cluster of chips so the
-  // categorization (AI Infra / Data Science / Gen AI / Physical AI) is still
-  // visible in the UI, just without a separate row per category. Counts
-  // reflect the current region/country scope only.
+  // Just the abbreviations — no category labels or per-category colors here;
+  // that grouping is still visible via the underline on each person's row
+  // chips. CERT_ORDER keeps related certs adjacent for a sensible reading
+  // order even without labels. Counts reflect the current region/country
+  // scope only.
   function renderCertChips() {
     if (!manifest) return; // called once before init's first data load
     const pool = collectRecords().records || [];
@@ -180,49 +202,27 @@
       for (const c of p.certs) if (counts.has(c.a)) counts.set(c.a, counts.get(c.a) + 1);
     }
 
-    const groups = new Map(); // category -> [abbr, ...], in CERT_ORDER
-    for (const abbr of CERT_ORDER) {
-      const cat = CERT_CATEGORY[abbr];
-      if (!groups.has(cat)) groups.set(cat, []);
-      groups.get(cat).push(abbr);
-    }
-
     els.certChips.innerHTML = "";
 
-    const allBtn = document.createElement("button");
-    allBtn.type = "button";
-    allBtn.className = "certfilterchip certfilterchip--all" + (selectedCerts.size === 0 ? " is-active" : "");
-    allBtn.innerHTML = `All <span class="certfilterchip__count">${pool.length.toLocaleString()}</span>`;
-    allBtn.addEventListener("click", () => {
+    const allChip = makeChip("All", pool.length, true, selectedCerts.size === 0);
+    allChip.addEventListener("click", () => {
       selectedCerts.clear();
       visibleCount = PAGE_SIZE;
       renderCertChips();
       render();
     });
-    els.certChips.appendChild(allBtn);
+    els.certChips.appendChild(allChip);
 
-    for (const [cat, abbrs] of groups) {
-      const cls = CATEGORY_META[cat].cls;
-
-      const label = document.createElement("span");
-      label.className = "certrail__label " + cls;
-      label.textContent = cat;
-      els.certChips.appendChild(label);
-
-      for (const abbr of abbrs) {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "certfilterchip " + cls + (selectedCerts.has(abbr) ? " is-active" : "");
-        btn.innerHTML = `${abbr} <span class="certfilterchip__count">${(counts.get(abbr) || 0).toLocaleString()}</span>`;
-        btn.addEventListener("click", () => {
-          if (selectedCerts.has(abbr)) selectedCerts.delete(abbr);
-          else selectedCerts.add(abbr);
-          visibleCount = PAGE_SIZE;
-          renderCertChips();
-          render();
-        });
-        els.certChips.appendChild(btn);
-      }
+    for (const abbr of CERT_ORDER) {
+      const chip = makeChip(abbr, counts.get(abbr) || 0, true, selectedCerts.has(abbr));
+      chip.addEventListener("click", () => {
+        if (selectedCerts.has(abbr)) selectedCerts.delete(abbr);
+        else selectedCerts.add(abbr);
+        visibleCount = PAGE_SIZE;
+        renderCertChips();
+        render();
+      });
+      els.certChips.appendChild(chip);
     }
   }
 
