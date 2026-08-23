@@ -23,15 +23,18 @@
     "NCP-AAI": "Gen AI",
     "NCP-OUSD": "Physical AI",
   };
-  const CATEGORIES = ["AI Infra", "Data Science", "Gen AI", "Physical AI"];
-  // Short label for the compact toggle buttons; CSS class carries the
-  // per-category underline color shown on each person's cert chips.
+  // CSS class carries the per-category underline color shown on each
+  // person's cert chips.
   const CATEGORY_META = {
-    "AI Infra": { label: "AI Infra", cls: "cat-infra" },
-    "Data Science": { label: "DS", cls: "cat-ds" },
-    "Gen AI": { label: "Gen AI", cls: "cat-genai" },
-    "Physical AI": { label: "Phys AI", cls: "cat-physai" },
+    "AI Infra": { cls: "cat-infra" },
+    "Data Science": { cls: "cat-ds" },
+    "Gen AI": { cls: "cat-genai" },
+    "Physical AI": { cls: "cat-physai" },
   };
+  // Every filterable abbreviation, ordered by category (AI Infra, Data
+  // Science, Gen AI, Physical AI) so adjacent chips read as grouped even
+  // without a label — mirrors CERT_CATEGORY above.
+  const CERT_ORDER = Object.keys(CERT_CATEGORY);
 
   /** @type {{countries: any[]}} */
   let manifest = null;
@@ -41,8 +44,8 @@
   let activeRegion = "All";
   /** @type {Set<string>} country names selected; empty = All (within activeRegion) */
   const selectedCountries = new Set();
-  /** @type {Set<string>} cert categories selected (OR'd); empty = no filter */
-  const selectedCategories = new Set();
+  /** @type {Set<string>} cert abbreviations selected (OR'd); empty = no filter */
+  const selectedCerts = new Set();
   let searchTerm = "";
   let sortMode = "badges-desc";
   let k8sOnly = false;
@@ -51,7 +54,7 @@
   const els = {
     regionTabs: document.getElementById("regionTabs"),
     countryChips: document.getElementById("countryChips"),
-    categoryToggle: document.getElementById("categoryToggle"),
+    certChips: document.getElementById("certChips"),
     searchInput: document.getElementById("searchInput"),
     sortSelect: document.getElementById("sortSelect"),
     k8sFilter: document.getElementById("k8sFilter"),
@@ -71,9 +74,9 @@
     manifest = await fetchJSON("data/manifest.json");
     renderRegionTabs();
     renderCountryChips();
-    renderCategoryToggle();
     bindControls();
     await loadPopulatedCountries();
+    renderCertChips(); // needs data loaded to compute per-cert counts
     render();
   }
 
@@ -113,6 +116,7 @@
         visibleCount = PAGE_SIZE;
         renderRegionTabs();
         renderCountryChips();
+        renderCertChips();
         render();
       });
       els.regionTabs.appendChild(btn);
@@ -133,6 +137,7 @@
       selectedCountries.clear();
       visibleCount = PAGE_SIZE;
       renderCountryChips();
+      renderCertChips();
       render();
     });
     els.countryChips.appendChild(allChip);
@@ -146,37 +151,85 @@
         else selectedCountries.add(c.name);
         visibleCount = PAGE_SIZE;
         renderCountryChips();
+        renderCertChips();
         render();
       });
       els.countryChips.appendChild(chip);
     }
   }
 
-  function makeChip(label, count, populated, isActive) {
+  function makeChip(label, count, populated, isActive, extraCls) {
     const chip = document.createElement("button");
-    chip.className = "chip" + (isActive ? " is-active" : "") + (!populated ? " is-unpopulated" : "");
+    chip.className =
+      "chip" + (extraCls ? " " + extraCls : "") + (isActive ? " is-active" : "") + (!populated ? " is-unpopulated" : "");
     chip.innerHTML = `<span class="chip__count">${count.toLocaleString()}</span><span>${label}</span>`;
     return chip;
   }
 
-  // Compact, static toggle-button group (no live counts — just OR filters,
-  // same semantics as the K8s checkbox but multi-select across 4 tracks).
-  function renderCategoryToggle() {
-    els.categoryToggle.innerHTML = "";
-    for (const cat of CATEGORIES) {
-      const meta = CATEGORY_META[cat];
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "cattoggle__btn " + meta.cls;
-      btn.textContent = meta.label;
-      btn.addEventListener("click", () => {
-        if (selectedCategories.has(cat)) selectedCategories.delete(cat);
-        else selectedCategories.add(cat);
-        btn.classList.toggle("is-active");
-        visibleCount = PAGE_SIZE;
-        render();
-      });
-      els.categoryToggle.appendChild(btn);
+  // Minimal filter chips, grouped into a labeled row per cert category (AI
+  // Infra / Data Science / Gen AI / Physical AI) so the categorization is
+  // visible in the UI itself rather than just inferred from chip order.
+  // Lighter style than the country shields on purpose — this is a filter,
+  // not a peer facet. Counts reflect the current region/country scope only.
+  function renderCertChips() {
+    if (!manifest) return; // called once before init's first data load
+    const pool = collectRecords().records || [];
+    const counts = new Map(CERT_ORDER.map((a) => [a, 0]));
+    for (const p of pool) {
+      if (!p.certs) continue;
+      for (const c of p.certs) if (counts.has(c.a)) counts.set(c.a, counts.get(c.a) + 1);
+    }
+
+    const groups = new Map(); // category -> [abbr, ...], in CERT_ORDER
+    for (const abbr of CERT_ORDER) {
+      const cat = CERT_CATEGORY[abbr];
+      if (!groups.has(cat)) groups.set(cat, []);
+      groups.get(cat).push(abbr);
+    }
+
+    els.certChips.innerHTML = "";
+
+    const allBtn = document.createElement("button");
+    allBtn.type = "button";
+    allBtn.className = "certfilterchip certfilterchip--all" + (selectedCerts.size === 0 ? " is-active" : "");
+    allBtn.innerHTML = `All <span class="certfilterchip__count">${pool.length.toLocaleString()}</span>`;
+    allBtn.addEventListener("click", () => {
+      selectedCerts.clear();
+      visibleCount = PAGE_SIZE;
+      renderCertChips();
+      render();
+    });
+    els.certChips.appendChild(allBtn);
+
+    for (const [cat, abbrs] of groups) {
+      const cls = CATEGORY_META[cat].cls;
+
+      const row = document.createElement("div");
+      row.className = "certrail__group";
+
+      const label = document.createElement("span");
+      label.className = "certrail__label " + cls;
+      label.textContent = cat;
+      row.appendChild(label);
+
+      const chipsWrap = document.createElement("div");
+      chipsWrap.className = "certrail__chips";
+      for (const abbr of abbrs) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "certfilterchip " + cls + (selectedCerts.has(abbr) ? " is-active" : "");
+        btn.innerHTML = `${abbr} <span class="certfilterchip__count">${(counts.get(abbr) || 0).toLocaleString()}</span>`;
+        btn.addEventListener("click", () => {
+          if (selectedCerts.has(abbr)) selectedCerts.delete(abbr);
+          else selectedCerts.add(abbr);
+          visibleCount = PAGE_SIZE;
+          renderCertChips();
+          render();
+        });
+        chipsWrap.appendChild(btn);
+      }
+      row.appendChild(chipsWrap);
+      els.certChips.appendChild(row);
     }
   }
 
@@ -235,11 +288,11 @@
     return records.filter((p) => p.k8s && p.k8s.length);
   }
 
-  // OR semantics: a person matches if they hold a cert in ANY selected
-  // category (same as country multi-select), not all of them.
-  function applyCategoryFilter(records) {
-    if (selectedCategories.size === 0) return records;
-    return records.filter((p) => p.certs && p.certs.some((c) => selectedCategories.has(CERT_CATEGORY[c.a])));
+  // OR semantics: a person matches if they hold ANY selected cert
+  // abbreviation (same as country multi-select), not all of them.
+  function applyCertFilter(records) {
+    if (selectedCerts.size === 0) return records;
+    return records.filter((p) => p.certs && p.certs.some((c) => selectedCerts.has(c.a)));
   }
 
   function applySort(records) {
@@ -282,7 +335,7 @@
 
     els.notLoadedState.hidden = true;
 
-    const filtered = applySort(applyCategoryFilter(applyK8sFilter(applySearch(records))));
+    const filtered = applySort(applyCertFilter(applyK8sFilter(applySearch(records))));
     const slice = filtered.slice(0, visibleCount);
 
     els.peopleList.innerHTML = "";

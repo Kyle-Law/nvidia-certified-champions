@@ -214,34 +214,75 @@ a { color: var(--accent); }
   margin-top: 1px;
 }
 
-/* Compact cert-category toggle buttons, inline in the controls row next to
-   the K8s checkbox — a filter, not a peer facet of country selection, so it
-   stays small. Colors match the underline shown on each person's chips
-   (see .certchip.cat-* below) so the toggle and the row-level indicator
-   read as the same system. */
+/* Cert filter — deliberately lighter than the country shields (it's a
+   filter, not a peer facet) and grouped into one labeled row per cert
+   category, so AI Infra / Data Science / Gen AI / Physical AI read as
+   visibly separate sections rather than 14 chips in a flat list. Colors
+   match the underline on each person's chips (see .certchip.cat-* below). */
 :root {
   --cat-infra: #4d8dff;
   --cat-ds: #e0629c;
   --cat-genai: #9b7ee8;
   --cat-physai: #4fc3b0;
 }
-.cattoggle { display: flex; gap: 6px; }
-.cattoggle__btn {
+.chiprail--certs {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.certrail__group { display: flex; align-items: baseline; gap: 12px; }
+.certrail__label {
+  flex: none;
+  width: 84px;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  background: var(--surface);
-  border: 1px solid var(--border-soft);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text-faint);
-  padding: 7px 10px;
+}
+.certrail__label.cat-infra { color: var(--cat-infra); }
+.certrail__label.cat-ds { color: var(--cat-ds); }
+.certrail__label.cat-genai { color: var(--cat-genai); }
+.certrail__label.cat-physai { color: var(--cat-physai); }
+.certrail__chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.certfilterchip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  background: none;
+  border: 1px solid var(--border-soft);
+  color: var(--text-dim);
+  padding: 4px 9px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
-.cattoggle__btn:hover { color: var(--text-dim); }
-.cattoggle__btn.cat-infra.is-active { color: var(--cat-infra); border-color: var(--cat-infra); background: color-mix(in srgb, var(--cat-infra) 14%, transparent); }
-.cattoggle__btn.cat-ds.is-active { color: var(--cat-ds); border-color: var(--cat-ds); background: color-mix(in srgb, var(--cat-ds) 14%, transparent); }
-.cattoggle__btn.cat-genai.is-active { color: var(--cat-genai); border-color: var(--cat-genai); background: color-mix(in srgb, var(--cat-genai) 14%, transparent); }
-.cattoggle__btn.cat-physai.is-active { color: var(--cat-physai); border-color: var(--cat-physai); background: color-mix(in srgb, var(--cat-physai) 14%, transparent); }
+.certfilterchip:hover { color: var(--text); border-color: var(--border); }
+.certfilterchip__count { font-size: 0.66rem; color: var(--text-faint); }
+
+.certfilterchip--all { margin-bottom: 1px; }
+.certfilterchip--all.is-active { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-soft); }
+.certfilterchip--all.is-active .certfilterchip__count { color: var(--accent); }
+
+.certfilterchip.cat-infra.is-active { color: var(--cat-infra); border-color: var(--cat-infra); background: color-mix(in srgb, var(--cat-infra) 12%, transparent); }
+.certfilterchip.cat-ds.is-active { color: var(--cat-ds); border-color: var(--cat-ds); background: color-mix(in srgb, var(--cat-ds) 12%, transparent); }
+.certfilterchip.cat-genai.is-active { color: var(--cat-genai); border-color: var(--cat-genai); background: color-mix(in srgb, var(--cat-genai) 12%, transparent); }
+.certfilterchip.cat-physai.is-active { color: var(--cat-physai); border-color: var(--cat-physai); background: color-mix(in srgb, var(--cat-physai) 12%, transparent); }
+.certfilterchip.cat-infra.is-active .certfilterchip__count { color: var(--cat-infra); }
+.certfilterchip.cat-ds.is-active .certfilterchip__count { color: var(--cat-ds); }
+.certfilterchip.cat-genai.is-active .certfilterchip__count { color: var(--cat-genai); }
+.certfilterchip.cat-physai.is-active .certfilterchip__count { color: var(--cat-physai); }
+
+@media (max-width: 720px) {
+  .certrail__group { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .certrail__label { width: auto; }
+}
 
 /* ---------------------------------------------------------
    Controls
@@ -394,7 +435,7 @@ a.certchip:hover, a.k8schip:hover { background: var(--surface-3); color: var(--t
 
 /* Small colored underline identifying which of the four cert tracks
    (nvidia.com/en-us/learn/certification/) each chip belongs to — matches
-   the .cattoggle__btn filter colors above. Chips stay in date order. */
+   the cert-chip-rail filter colors above. Chips stay in date order. */
 .certchip::after {
   content: "";
   position: absolute;
