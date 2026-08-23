@@ -281,11 +281,16 @@
     return records.filter((p) => p.k8s && p.k8s.length);
   }
 
-  // OR semantics: a person matches if they hold ANY selected cert
-  // abbreviation (same as country multi-select), not all of them.
+  // AND semantics (unlike country, which is OR): selecting multiple certs
+  // narrows to people who hold ALL of them — e.g. NCP-AIO + NCP-AIN finds
+  // people holding that specific combination, not either one alone.
   function applyCertFilter(records) {
     if (selectedCerts.size === 0) return records;
-    return records.filter((p) => p.certs && p.certs.some((c) => selectedCerts.has(c.a)));
+    return records.filter((p) => {
+      if (!p.certs) return false;
+      const held = new Set(p.certs.map((c) => c.a));
+      return [...selectedCerts].every((a) => held.has(a));
+    });
   }
 
   function applySort(records) {
