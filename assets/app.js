@@ -4,6 +4,35 @@
   const CREDLY = "https://www.credly.com";
   const PAGE_SIZE = 40;
 
+  // Groups each NVIDIA cert abbreviation into the same four tracks NVIDIA
+  // itself uses at nvidia.com/en-us/learn/certification/. Retired certs
+  // (NCP-IB, NCA-AIDC) are bucketed into the track they're closest to.
+  const CERT_CATEGORY = {
+    "NCA-AIIO": "AI Infra",
+    "NCP-AII": "AI Infra",
+    "NCP-AIO": "AI Infra",
+    "NCP-AIN": "AI Infra",
+    "NCP-ARI": "AI Infra",
+    "NCP-IB": "AI Infra",
+    "NCA-AIDC": "AI Infra",
+    "NCA-ADS": "Data Science",
+    "NCP-ADS": "Data Science",
+    "NCA-GENL": "Gen AI",
+    "NCA-GENM": "Gen AI",
+    "NCP-GENL": "Gen AI",
+    "NCP-AAI": "Gen AI",
+    "NCP-OUSD": "Physical AI",
+  };
+  const CATEGORIES = ["AI Infra", "Data Science", "Gen AI", "Physical AI"];
+  // Short label for the compact toggle buttons; CSS class carries the
+  // per-category underline color shown on each person's cert chips.
+  const CATEGORY_META = {
+    "AI Infra": { label: "AI Infra", cls: "cat-infra" },
+    "Data Science": { label: "DS", cls: "cat-ds" },
+    "Gen AI": { label: "Gen AI", cls: "cat-genai" },
+    "Physical AI": { label: "Phys AI", cls: "cat-physai" },
+  };
+
   /** @type {{countries: any[]}} */
   let manifest = null;
   /** @type {Map<string, any[]>} country slug -> array of person records (with .country/.region attached) */
@@ -12,6 +41,8 @@
   let activeRegion = "All";
   /** @type {Set<string>} country names selected; empty = All (within activeRegion) */
   const selectedCountries = new Set();
+  /** @type {Set<string>} cert categories selected (OR'd); empty = no filter */
+  const selectedCategories = new Set();
   let searchTerm = "";
   let sortMode = "badges-desc";
   let k8sOnly = false;
@@ -20,6 +51,7 @@
   const els = {
     regionTabs: document.getElementById("regionTabs"),
     countryChips: document.getElementById("countryChips"),
+    categoryToggle: document.getElementById("categoryToggle"),
     searchInput: document.getElementById("searchInput"),
     sortSelect: document.getElementById("sortSelect"),
     k8sFilter: document.getElementById("k8sFilter"),
@@ -39,6 +71,7 @@
     manifest = await fetchJSON("data/manifest.json");
     renderRegionTabs();
     renderCountryChips();
+    renderCategoryToggle();
     bindControls();
     await loadPopulatedCountries();
     render();
@@ -126,6 +159,27 @@
     return chip;
   }
 
+  // Compact, static toggle-button group (no live counts — just OR filters,
+  // same semantics as the K8s checkbox but multi-select across 4 tracks).
+  function renderCategoryToggle() {
+    els.categoryToggle.innerHTML = "";
+    for (const cat of CATEGORIES) {
+      const meta = CATEGORY_META[cat];
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "cattoggle__btn " + meta.cls;
+      btn.textContent = meta.label;
+      btn.addEventListener("click", () => {
+        if (selectedCategories.has(cat)) selectedCategories.delete(cat);
+        else selectedCategories.add(cat);
+        btn.classList.toggle("is-active");
+        visibleCount = PAGE_SIZE;
+        render();
+      });
+      els.categoryToggle.appendChild(btn);
+    }
+  }
+
   function bindControls() {
     els.searchInput.addEventListener("input", (e) => {
       searchTerm = e.target.value.trim().toLowerCase();
@@ -181,6 +235,13 @@
     return records.filter((p) => p.k8s && p.k8s.length);
   }
 
+  // OR semantics: a person matches if they hold a cert in ANY selected
+  // category (same as country multi-select), not all of them.
+  function applyCategoryFilter(records) {
+    if (selectedCategories.size === 0) return records;
+    return records.filter((p) => p.certs && p.certs.some((c) => selectedCategories.has(CERT_CATEGORY[c.a])));
+  }
+
   function applySort(records) {
     const arr = records.slice();
     switch (sortMode) {
@@ -221,7 +282,7 @@
 
     els.notLoadedState.hidden = true;
 
-    const filtered = applySort(applyK8sFilter(applySearch(records)));
+    const filtered = applySort(applyCategoryFilter(applyK8sFilter(applySearch(records))));
     const slice = filtered.slice(0, visibleCount);
 
     els.peopleList.innerHTML = "";
@@ -282,7 +343,9 @@
   // to showing that badge's name + date the way this used to always work.
   function renderCerts(p, badgeUrl) {
     if (p.certs && p.certs.length) {
-      return `<div class="chiprow">${chipList(p.certs, "certchip")}</div>`;
+      const extra = (c) => CATEGORY_META[CERT_CATEGORY[c.a]]?.cls || "";
+      const extraTitle = (c) => CERT_CATEGORY[c.a] || "";
+      return `<div class="chiprow">${chipList(p.certs, "certchip", extra, extraTitle)}</div>`;
     }
     const dateStr = p.bd ? p.bd.slice(0, 10) : "";
     return `
@@ -304,14 +367,16 @@
     return `<div class="chiprow">${chipList(p.k8s, "k8schip")}</div>`;
   }
 
-  function chipList(certs, className) {
+  function chipList(certs, className, extraClassFn, extraTitleFn) {
     return certs
       .map((c) => {
         const url = c.u ? CREDLY + c.u : null;
         const dateStr = c.d ? c.d.slice(0, 10) : "";
+        const cls = className + (extraClassFn ? " " + extraClassFn(c) : "");
+        const title = extraTitleFn ? [extraTitleFn(c), dateStr].filter(Boolean).join(" · ") : dateStr;
         return url
-          ? `<a class="${className}" href="${escapeAttr(url)}" target="_blank" rel="noopener" title="${escapeAttr(dateStr)}">${escapeHTML(c.a)}</a>`
-          : `<span class="${className}" title="${escapeAttr(dateStr)}">${escapeHTML(c.a)}</span>`;
+          ? `<a class="${cls}" href="${escapeAttr(url)}" target="_blank" rel="noopener" title="${escapeAttr(title)}">${escapeHTML(c.a)}</a>`
+          : `<span class="${cls}" title="${escapeAttr(title)}">${escapeHTML(c.a)}</span>`;
       })
       .join("");
   }
