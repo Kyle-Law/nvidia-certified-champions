@@ -215,10 +215,11 @@ a { color: var(--accent); }
 }
 
 /* Cert filter — deliberately lighter than the country shields (it's a
-   filter, not a peer facet) and grouped into one labeled row per cert
-   category, so AI Infra / Data Science / Gen AI / Physical AI read as
-   visibly separate sections rather than 14 chips in a flat list. Colors
-   match the underline on each person's chips (see .certchip.cat-* below). */
+   filter, not a peer facet), all in one flowing row. A small colored label
+   precedes each category's cluster of chips so the categorization (AI
+   Infra / Data Science / Gen AI / Physical AI) is still visible without a
+   separate row per category. Colors match the underline on each person's
+   chips (see .certchip.cat-* below). */
 :root {
   --cat-infra: #4d8dff;
   --cat-ds: #e0629c;
@@ -230,24 +231,24 @@ a { color: var(--accent); }
   margin: 0 auto;
   padding: 2px 24px 16px;
   display: flex;
-  flex-direction: column;
-  gap: 7px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
 }
-.certrail__group { display: flex; align-items: baseline; gap: 12px; }
 .certrail__label {
-  flex: none;
-  width: 84px;
   font-family: var(--font-mono);
   font-size: 0.66rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-faint);
+  margin-left: 6px;
+  white-space: nowrap;
 }
+.certrail__label:first-of-type { margin-left: 2px; }
 .certrail__label.cat-infra { color: var(--cat-infra); }
 .certrail__label.cat-ds { color: var(--cat-ds); }
 .certrail__label.cat-genai { color: var(--cat-genai); }
 .certrail__label.cat-physai { color: var(--cat-physai); }
-.certrail__chips { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .certfilterchip {
   display: inline-flex;
@@ -278,11 +279,6 @@ a { color: var(--accent); }
 .certfilterchip.cat-ds.is-active .certfilterchip__count { color: var(--cat-ds); }
 .certfilterchip.cat-genai.is-active .certfilterchip__count { color: var(--cat-genai); }
 .certfilterchip.cat-physai.is-active .certfilterchip__count { color: var(--cat-physai); }
-
-@media (max-width: 720px) {
-  .certrail__group { flex-direction: column; align-items: flex-start; gap: 4px; }
-  .certrail__label { width: auto; }
-}
 
 /* ---------------------------------------------------------
    Controls

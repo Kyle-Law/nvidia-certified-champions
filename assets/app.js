@@ -166,11 +166,11 @@
     return chip;
   }
 
-  // Minimal filter chips, grouped into a labeled row per cert category (AI
-  // Infra / Data Science / Gen AI / Physical AI) so the categorization is
-  // visible in the UI itself rather than just inferred from chip order.
-  // Lighter style than the country shields on purpose — this is a filter,
-  // not a peer facet. Counts reflect the current region/country scope only.
+  // Minimal filter chips, all in one flowing row (wraps on narrow screens).
+  // A small colored label precedes each category's cluster of chips so the
+  // categorization (AI Infra / Data Science / Gen AI / Physical AI) is still
+  // visible in the UI, just without a separate row per category. Counts
+  // reflect the current region/country scope only.
   function renderCertChips() {
     if (!manifest) return; // called once before init's first data load
     const pool = collectRecords().records || [];
@@ -204,16 +204,11 @@
     for (const [cat, abbrs] of groups) {
       const cls = CATEGORY_META[cat].cls;
 
-      const row = document.createElement("div");
-      row.className = "certrail__group";
-
       const label = document.createElement("span");
       label.className = "certrail__label " + cls;
       label.textContent = cat;
-      row.appendChild(label);
+      els.certChips.appendChild(label);
 
-      const chipsWrap = document.createElement("div");
-      chipsWrap.className = "certrail__chips";
       for (const abbr of abbrs) {
         const btn = document.createElement("button");
         btn.type = "button";
@@ -226,10 +221,8 @@
           renderCertChips();
           render();
         });
-        chipsWrap.appendChild(btn);
+        els.certChips.appendChild(btn);
       }
-      row.appendChild(chipsWrap);
-      els.certChips.appendChild(row);
     }
   }
 
