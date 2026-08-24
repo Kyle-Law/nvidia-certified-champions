@@ -22,6 +22,9 @@ jobs:
       - name: Fetch latest data from Credly
         run: node scripts/fetch-data.mjs
 
+      - name: Enrich with NVIDIA cert + Kubernetes cert data
+        run: node scripts/enrich-certs.mjs
+
       - name: Commit changes if any
         run: |
           git config user.name "github-actions[bot]"

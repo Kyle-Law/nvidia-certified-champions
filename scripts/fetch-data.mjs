@@ -56,7 +56,20 @@ async function fetchCountryPage(filterValue, page) {
   return res.json();
 }
 
-function toCompactRecord(r) {
+// Loads whatever's already at data/countries/<slug>.json (if anything) so a
+// re-fetch can carry forward the certs[]/k8s[] fields enrich-certs.mjs adds
+// — this script only knows about base fields, and would otherwise silently
+// wipe that second-pass data on every refresh.
+async function loadExisting(slug) {
+  try {
+    const raw = await readFile(path.join(COUNTRIES_DIR, `${slug}.json`), "utf-8");
+    return new Map(JSON.parse(raw).map((r) => [r.id, r]));
+  } catch {
+    return new Map(); // no file yet — first fetch for this country
+  }
+}
+
+function toCompactRecord(r, existingById) {
   // most_recently_accepted_credential is the person's most recent badge from
   // ANY issuer on Credly — not necessarily NVIDIA. highlighted_badges is
   // already scoped to this request's organization_id, so it's the NVIDIA
@@ -64,7 +77,7 @@ function toCompactRecord(r) {
   // highlighted_badges is ever empty (shouldn't happen given the org filter).
   const nvidiaBadge = (r.highlighted_badges && r.highlighted_badges[0]) || r.most_recently_accepted_credential || {};
   const name = [r.first_name, r.middle_name, r.last_name].filter(Boolean).join(" ");
-  return {
+  const record = {
     id: r.id,
     name,
     role: r.role || "",
@@ -76,12 +89,18 @@ function toCompactRecord(r) {
     p: r.vanity_url || "",
     bp: nvidiaBadge.url || "",
   };
+
+  const prior = existingById.get(r.id);
+  if (prior?.certs) record.certs = prior.certs;
+  if (prior?.k8s) record.k8s = prior.k8s;
+  return record;
 }
 
 async function fetchCountry(country) {
-  const { name, filter_value } = country;
+  const { name, filter_value, slug } = country;
   console.log(`\n→ ${name} (filter: "${filter_value}")`);
 
+  const existingById = await loadExisting(slug);
   let page = 1;
   let totalPages = 1;
   let totalCount = 0;
@@ -92,7 +111,7 @@ async function fetchCountry(country) {
     totalPages = json.metadata?.total_pages ?? 1;
     totalCount = json.metadata?.total_count ?? json.data.length;
 
-    for (const r of json.data) records.push(toCompactRecord(r));
+    for (const r of json.data) records.push(toCompactRecord(r, existingById));
 
     process.stdout.write(`  page ${page}/${totalPages} (${records.length}/${totalCount})\r`);
     page += 1;

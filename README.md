@@ -195,13 +195,17 @@ Already deployed at the live demo link above. To do it again elsewhere:
 
 ## Keeping data fresh (optional)
 
-A sample GitHub Actions workflow is included at
-`.github/workflows/update-data.yml`, scheduled weekly. It currently only
-runs `fetch-data.mjs` (base data), not `enrich-certs.mjs` — so a person
-added by the scheduled run will show the old badge-name/date fallback in
-the UI (see the `certs` field description above) until `enrich-certs.mjs`
-is run for them manually. Adjust the workflow to also run the enrichment
-script if you want that to happen automatically too.
+A GitHub Actions workflow is included at
+`.github/workflows/update-data.yml`, scheduled weekly. It runs both passes —
+`fetch-data.mjs` then `enrich-certs.mjs` — so new people get `certs[]`/
+`k8s[]` automatically, not just the base fields.
+
+`fetch-data.mjs` merges by Credly id: it carries forward any existing
+`certs[]`/`k8s[]` for a person it already knows about rather than
+overwriting them with a bare base record, so a fetch-only re-run (run
+manually, without the enrichment step) is safe — it won't erase prior
+enrichment. It's still worth running `enrich-certs.mjs` afterward for
+whoever's newly added, same as the workflow does.
 
 ## Disclaimer
 
