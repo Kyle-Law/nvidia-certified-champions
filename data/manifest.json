@@ -1,5 +1,5 @@
 {
-  "region_name": "Asia-Pacific",
+  "region_name": "Asia-Pacific, Europe",
   "generated_at": "2026-08-24",
   "source": "Credly NVIDIA Earner Directory (public API, filtered by location)",
   "organization_id": "be046724-f99a-4626-922e-425eca1efa2e",
@@ -91,6 +91,166 @@
       "region": "Oceania",
       "filter_value": "Australia",
       "count": 249,
+      "populated": true
+    },
+    {
+      "name": "United Kingdom",
+      "slug": "united-kingdom",
+      "region": "Western Europe",
+      "filter_value": "United Kingdom",
+      "count": 467,
+      "populated": true
+    },
+    {
+      "name": "Germany",
+      "slug": "germany",
+      "region": "Western Europe",
+      "filter_value": "Germany",
+      "count": 390,
+      "populated": true
+    },
+    {
+      "name": "France",
+      "slug": "france",
+      "region": "Western Europe",
+      "filter_value": "France",
+      "count": 281,
+      "populated": true
+    },
+    {
+      "name": "Netherlands",
+      "slug": "netherlands",
+      "region": "Western Europe",
+      "filter_value": "Netherlands",
+      "count": 104,
+      "populated": true
+    },
+    {
+      "name": "Belgium",
+      "slug": "belgium",
+      "region": "Western Europe",
+      "filter_value": "Belgium",
+      "count": 37,
+      "populated": true
+    },
+    {
+      "name": "Ireland",
+      "slug": "ireland",
+      "region": "Western Europe",
+      "filter_value": "Ireland",
+      "count": 55,
+      "populated": true
+    },
+    {
+      "name": "Austria",
+      "slug": "austria",
+      "region": "Western Europe",
+      "filter_value": "Austria",
+      "count": 16,
+      "populated": true
+    },
+    {
+      "name": "Switzerland",
+      "slug": "switzerland",
+      "region": "Western Europe",
+      "filter_value": "Switzerland",
+      "count": 59,
+      "populated": true
+    },
+    {
+      "name": "Sweden",
+      "slug": "sweden",
+      "region": "Northern Europe",
+      "filter_value": "Sweden",
+      "count": 57,
+      "populated": true
+    },
+    {
+      "name": "Norway",
+      "slug": "norway",
+      "region": "Northern Europe",
+      "filter_value": "Norway",
+      "count": 27,
+      "populated": true
+    },
+    {
+      "name": "Finland",
+      "slug": "finland",
+      "region": "Northern Europe",
+      "filter_value": "Finland",
+      "count": 21,
+      "populated": true
+    },
+    {
+      "name": "Denmark",
+      "slug": "denmark",
+      "region": "Northern Europe",
+      "filter_value": "Denmark",
+      "count": 18,
+      "populated": true
+    },
+    {
+      "name": "Spain",
+      "slug": "spain",
+      "region": "Southern Europe",
+      "filter_value": "Spain",
+      "count": 189,
+      "populated": true
+    },
+    {
+      "name": "Italy",
+      "slug": "italy",
+      "region": "Southern Europe",
+      "filter_value": "Italy",
+      "count": 134,
+      "populated": true
+    },
+    {
+      "name": "Portugal",
+      "slug": "portugal",
+      "region": "Southern Europe",
+      "filter_value": "Portugal",
+      "count": 39,
+      "populated": true
+    },
+    {
+      "name": "Greece",
+      "slug": "greece",
+      "region": "Southern Europe",
+      "filter_value": "Greece",
+      "count": 15,
+      "populated": true
+    },
+    {
+      "name": "Poland",
+      "slug": "poland",
+      "region": "Eastern Europe",
+      "filter_value": "Poland",
+      "count": 125,
+      "populated": true
+    },
+    {
+      "name": "Czech Republic",
+      "slug": "czech-republic",
+      "region": "Eastern Europe",
+      "filter_value": "Czech Republic",
+      "count": 32,
+      "populated": true
+    },
+    {
+      "name": "Romania",
+      "slug": "romania",
+      "region": "Eastern Europe",
+      "filter_value": "Romania",
+      "count": 35,
+      "populated": true
+    },
+    {
+      "name": "Ukraine",
+      "slug": "ukraine",
+      "region": "Eastern Europe",
+      "filter_value": "Ukraine",
+      "count": 72,
       "populated": true
     }
   ]
