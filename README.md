@@ -5,7 +5,7 @@ from Credly's public earner directory. Pure static frontend (HTML/CSS/JS, no
 build step, no framework) reading flat JSON files as its "backend."
 
 **Currently covers Asia-Pacific, Europe, the Americas, Middle East, and
-Africa (9,700+ people, 47 countries).** The data
+Africa (14,200+ people, 48 countries).** The data
 pipeline and schema aren't APAC-specific — adding another region is just
 adding countries to `data/manifest.json` and running the fetch scripts (see
 [Adding a new country](#adding-a-new-country) below). Nothing about the UI,
@@ -73,6 +73,7 @@ directory with a data pipeline you can re-run to keep it current.
 | Eastern Europe | Czech Republic | ✅ 32 people loaded |
 | Eastern Europe | Romania | ✅ 35 people loaded |
 | Eastern Europe | Ukraine | ✅ 72 people loaded |
+| North America | United States | ✅ 4,515 people loaded |
 | North America | Canada | ✅ 350 people loaded |
 | North America | Mexico | ✅ 105 people loaded |
 | South America | Brazil | ✅ 165 people loaded |
@@ -89,11 +90,6 @@ directory with a data pipeline you can re-run to keep it current.
 | Africa | Nigeria | ✅ 25 people loaded |
 | Africa | Egypt | ✅ 58 people loaded |
 | Africa | Kenya | ✅ 7 people loaded |
-
-The United States (4,515 known) is deliberately **not yet included** —
-it's more than double every other new-region country combined, so it's
-being left as a deliberate follow-up rather than folded in silently. See
-[Adding a new country](#adding-a-new-country) to add it the same way.
 
 "Region" here is just organizational metadata carried in
 `data/manifest.json` — the UI doesn't currently group or filter by it, but

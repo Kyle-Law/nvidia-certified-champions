@@ -254,6 +254,14 @@
       "populated": true
     },
     {
+      "name": "United States",
+      "slug": "united-states",
+      "region": "North America",
+      "filter_value": "United States",
+      "count": 4515,
+      "populated": true
+    },
+    {
       "name": "Canada",
       "slug": "canada",
       "region": "North America",

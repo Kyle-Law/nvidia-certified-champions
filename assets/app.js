@@ -70,6 +70,7 @@
     "Czech Republic": "🇨🇿",
     Romania: "🇷🇴",
     Ukraine: "🇺🇦",
+    "United States": "🇺🇸",
     Canada: "🇨🇦",
     Mexico: "🇲🇽",
     Brazil: "🇧🇷",
