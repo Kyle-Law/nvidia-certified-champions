@@ -1,5 +1,5 @@
 {
-  "region_name": "Asia-Pacific, Europe",
+  "region_name": "Asia-Pacific, Europe, Americas, Middle East, Africa",
   "generated_at": "2026-08-24",
   "source": "Credly NVIDIA Earner Directory (public API, filtered by location)",
   "organization_id": "be046724-f99a-4626-922e-425eca1efa2e",
@@ -251,6 +251,134 @@
       "region": "Eastern Europe",
       "filter_value": "Ukraine",
       "count": 72,
+      "populated": true
+    },
+    {
+      "name": "Canada",
+      "slug": "canada",
+      "region": "North America",
+      "filter_value": "Canada",
+      "count": 350,
+      "populated": true
+    },
+    {
+      "name": "Mexico",
+      "slug": "mexico",
+      "region": "North America",
+      "filter_value": "Mexico",
+      "count": 105,
+      "populated": true
+    },
+    {
+      "name": "Brazil",
+      "slug": "brazil",
+      "region": "South America",
+      "filter_value": "Brazil",
+      "count": 165,
+      "populated": true
+    },
+    {
+      "name": "Argentina",
+      "slug": "argentina",
+      "region": "South America",
+      "filter_value": "Argentina",
+      "count": 15,
+      "populated": true
+    },
+    {
+      "name": "Chile",
+      "slug": "chile",
+      "region": "South America",
+      "filter_value": "Chile",
+      "count": 23,
+      "populated": true
+    },
+    {
+      "name": "Colombia",
+      "slug": "colombia",
+      "region": "South America",
+      "filter_value": "Colombia",
+      "count": 53,
+      "populated": true
+    },
+    {
+      "name": "Peru",
+      "slug": "peru",
+      "region": "South America",
+      "filter_value": "Peru",
+      "count": 18,
+      "populated": true
+    },
+    {
+      "name": "United Arab Emirates",
+      "slug": "united-arab-emirates",
+      "region": "Middle East",
+      "filter_value": "United Arab Emirates",
+      "count": 197,
+      "populated": true
+    },
+    {
+      "name": "Saudi Arabia",
+      "slug": "saudi-arabia",
+      "region": "Middle East",
+      "filter_value": "Saudi Arabia",
+      "count": 529,
+      "populated": true
+    },
+    {
+      "name": "Israel",
+      "slug": "israel",
+      "region": "Middle East",
+      "filter_value": "Israel",
+      "count": 52,
+      "populated": true
+    },
+    {
+      "name": "Turkey",
+      "slug": "turkey",
+      "region": "Middle East",
+      "filter_value": "Turkey",
+      "count": 61,
+      "populated": true
+    },
+    {
+      "name": "Qatar",
+      "slug": "qatar",
+      "region": "Middle East",
+      "filter_value": "Qatar",
+      "count": 12,
+      "populated": true
+    },
+    {
+      "name": "South Africa",
+      "slug": "south-africa",
+      "region": "Africa",
+      "filter_value": "South Africa",
+      "count": 28,
+      "populated": true
+    },
+    {
+      "name": "Nigeria",
+      "slug": "nigeria",
+      "region": "Africa",
+      "filter_value": "Nigeria",
+      "count": 25,
+      "populated": true
+    },
+    {
+      "name": "Egypt",
+      "slug": "egypt",
+      "region": "Africa",
+      "filter_value": "Egypt",
+      "count": 58,
+      "populated": true
+    },
+    {
+      "name": "Kenya",
+      "slug": "kenya",
+      "region": "Africa",
+      "filter_value": "Kenya",
+      "count": 7,
       "populated": true
     }
   ]

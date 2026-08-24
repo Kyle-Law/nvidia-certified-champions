@@ -70,6 +70,22 @@
     "Czech Republic": "🇨🇿",
     Romania: "🇷🇴",
     Ukraine: "🇺🇦",
+    Canada: "🇨🇦",
+    Mexico: "🇲🇽",
+    Brazil: "🇧🇷",
+    Argentina: "🇦🇷",
+    Chile: "🇨🇱",
+    Colombia: "🇨🇴",
+    Peru: "🇵🇪",
+    "United Arab Emirates": "🇦🇪",
+    "Saudi Arabia": "🇸🇦",
+    Israel: "🇮🇱",
+    Turkey: "🇹🇷",
+    Qatar: "🇶🇦",
+    "South Africa": "🇿🇦",
+    Nigeria: "🇳🇬",
+    Egypt: "🇪🇬",
+    Kenya: "🇰🇪",
   };
 
   /** @type {{countries: any[]}} */

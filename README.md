@@ -4,7 +4,8 @@ A searchable, filterable directory of NVIDIA-certified professionals, built
 from Credly's public earner directory. Pure static frontend (HTML/CSS/JS, no
 build step, no framework) reading flat JSON files as its "backend."
 
-**Currently covers Asia-Pacific and Europe (8,000+ people, 31 countries).** The data
+**Currently covers Asia-Pacific, Europe, the Americas, Middle East, and
+Africa (9,700+ people, 47 countries).** The data
 pipeline and schema aren't APAC-specific — adding another region is just
 adding countries to `data/manifest.json` and running the fetch scripts (see
 [Adding a new country](#adding-a-new-country) below). Nothing about the UI,
@@ -72,6 +73,27 @@ directory with a data pipeline you can re-run to keep it current.
 | Eastern Europe | Czech Republic | ✅ 32 people loaded |
 | Eastern Europe | Romania | ✅ 35 people loaded |
 | Eastern Europe | Ukraine | ✅ 72 people loaded |
+| North America | Canada | ✅ 350 people loaded |
+| North America | Mexico | ✅ 105 people loaded |
+| South America | Brazil | ✅ 165 people loaded |
+| South America | Argentina | ✅ 15 people loaded |
+| South America | Chile | ✅ 23 people loaded |
+| South America | Colombia | ✅ 53 people loaded |
+| South America | Peru | ✅ 18 people loaded |
+| Middle East | United Arab Emirates | ✅ 197 people loaded |
+| Middle East | Saudi Arabia | ✅ 529 people loaded |
+| Middle East | Israel | ✅ 52 people loaded |
+| Middle East | Turkey | ✅ 61 people loaded |
+| Middle East | Qatar | ✅ 12 people loaded |
+| Africa | South Africa | ✅ 28 people loaded |
+| Africa | Nigeria | ✅ 25 people loaded |
+| Africa | Egypt | ✅ 58 people loaded |
+| Africa | Kenya | ✅ 7 people loaded |
+
+The United States (4,515 known) is deliberately **not yet included** —
+it's more than double every other new-region country combined, so it's
+being left as a deliberate follow-up rather than folded in silently. See
+[Adding a new country](#adding-a-new-country) to add it the same way.
 
 "Region" here is just organizational metadata carried in
 `data/manifest.json` — the UI doesn't currently group or filter by it, but
