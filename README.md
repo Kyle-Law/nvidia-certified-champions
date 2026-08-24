@@ -4,7 +4,7 @@ A searchable, filterable directory of NVIDIA-certified professionals, built
 from Credly's public earner directory. Pure static frontend (HTML/CSS/JS, no
 build step, no framework) reading flat JSON files as its "backend."
 
-**Currently covers Asia-Pacific (5,800+ people, 11 countries).** The data
+**Currently covers Asia-Pacific and Europe (8,000+ people, 31 countries).** The data
 pipeline and schema aren't APAC-specific — adding another region is just
 adding countries to `data/manifest.json` and running the fetch scripts (see
 [Adding a new country](#adding-a-new-country) below). Nothing about the UI,
@@ -42,16 +42,36 @@ directory with a data pipeline you can re-run to keep it current.
 | Region | Country | Status |
 |---|---|---|
 | Southeast Asia | Malaysia | ✅ 108 people loaded |
-| Southeast Asia | Singapore | ✅ 396 people loaded |
+| Southeast Asia | Singapore | ✅ 397 people loaded |
 | Southeast Asia | Indonesia | ✅ 76 people loaded |
 | Southeast Asia | Thailand | ✅ 43 people loaded |
 | Southeast Asia | Vietnam | ✅ 149 people loaded |
 | Southeast Asia | Philippines | ✅ 43 people loaded |
-| South Asia | India | ✅ 2,869 people loaded |
-| East Asia | China | ✅ 1,066 people loaded |
+| South Asia | India | ✅ 2,871 people loaded |
+| East Asia | China | ✅ 1,067 people loaded |
 | East Asia | Japan | ✅ 388 people loaded |
 | East Asia | South Korea | ✅ 457 people loaded |
 | Oceania | Australia | ✅ 249 people loaded |
+| Western Europe | United Kingdom | ✅ 467 people loaded |
+| Western Europe | Germany | ✅ 390 people loaded |
+| Western Europe | France | ✅ 281 people loaded |
+| Western Europe | Netherlands | ✅ 104 people loaded |
+| Western Europe | Belgium | ✅ 37 people loaded |
+| Western Europe | Ireland | ✅ 55 people loaded |
+| Western Europe | Austria | ✅ 16 people loaded |
+| Western Europe | Switzerland | ✅ 59 people loaded |
+| Northern Europe | Sweden | ✅ 57 people loaded |
+| Northern Europe | Norway | ✅ 27 people loaded |
+| Northern Europe | Finland | ✅ 21 people loaded |
+| Northern Europe | Denmark | ✅ 18 people loaded |
+| Southern Europe | Spain | ✅ 189 people loaded |
+| Southern Europe | Italy | ✅ 134 people loaded |
+| Southern Europe | Portugal | ✅ 39 people loaded |
+| Southern Europe | Greece | ✅ 15 people loaded |
+| Eastern Europe | Poland | ✅ 125 people loaded |
+| Eastern Europe | Czech Republic | ✅ 32 people loaded |
+| Eastern Europe | Romania | ✅ 35 people loaded |
+| Eastern Europe | Ukraine | ✅ 72 people loaded |
 
 "Region" here is just organizational metadata carried in
 `data/manifest.json` — the UI doesn't currently group or filter by it, but
