@@ -1,6 +1,6 @@
 {
   "region_name": "Asia-Pacific, Europe, Americas, Middle East, Africa",
-  "generated_at": "2026-08-31",
+  "generated_at": "2026-09-07",
   "source": "Credly NVIDIA Earner Directory (public API, filtered by location)",
   "organization_id": "be046724-f99a-4626-922e-425eca1efa2e",
   "note": "count is the total earner count reported by Credly at generation time. populated=true means the per-person records are checked into data/countries/. populated=false means only the count is known so far — run scripts/fetch-data.mjs to pull the full list.",
@@ -10,7 +10,7 @@
       "slug": "malaysia",
       "region": "Southeast Asia",
       "filter_value": "Malaysia",
-      "count": 108,
+      "count": 113,
       "populated": true
     },
     {
@@ -18,7 +18,7 @@
       "slug": "singapore",
       "region": "Southeast Asia",
       "filter_value": "Singapore",
-      "count": 401,
+      "count": 404,
       "populated": true
     },
     {
@@ -26,7 +26,7 @@
       "slug": "indonesia",
       "region": "Southeast Asia",
       "filter_value": "Indonesia",
-      "count": 77,
+      "count": 78,
       "populated": true
     },
     {
@@ -34,7 +34,7 @@
       "slug": "thailand",
       "region": "Southeast Asia",
       "filter_value": "Thailand",
-      "count": 49,
+      "count": 50,
       "populated": true
     },
     {
@@ -50,7 +50,7 @@
       "slug": "philippines",
       "region": "Southeast Asia",
       "filter_value": "Philippines",
-      "count": 44,
+      "count": 47,
       "populated": true
     },
     {
@@ -58,7 +58,7 @@
       "slug": "india",
       "region": "South Asia",
       "filter_value": "India",
-      "count": 2913,
+      "count": 2970,
       "populated": true
     },
     {
@@ -74,7 +74,7 @@
       "slug": "japan",
       "region": "East Asia",
       "filter_value": "Japan",
-      "count": 414,
+      "count": 431,
       "populated": true
     },
     {
@@ -82,7 +82,7 @@
       "slug": "south-korea",
       "region": "East Asia",
       "filter_value": "Korea, Republic of",
-      "count": 463,
+      "count": 464,
       "populated": true
     },
     {
@@ -90,7 +90,7 @@
       "slug": "australia",
       "region": "Oceania",
       "filter_value": "Australia",
-      "count": 249,
+      "count": 252,
       "populated": true
     },
     {
@@ -98,7 +98,7 @@
       "slug": "united-kingdom",
       "region": "Western Europe",
       "filter_value": "United Kingdom",
-      "count": 476,
+      "count": 484,
       "populated": true
     },
     {
@@ -106,7 +106,7 @@
       "slug": "germany",
       "region": "Western Europe",
       "filter_value": "Germany",
-      "count": 403,
+      "count": 408,
       "populated": true
     },
     {
@@ -114,7 +114,7 @@
       "slug": "france",
       "region": "Western Europe",
       "filter_value": "France",
-      "count": 285,
+      "count": 286,
       "populated": true
     },
     {
@@ -122,7 +122,7 @@
       "slug": "netherlands",
       "region": "Western Europe",
       "filter_value": "Netherlands",
-      "count": 107,
+      "count": 108,
       "populated": true
     },
     {
@@ -130,7 +130,7 @@
       "slug": "belgium",
       "region": "Western Europe",
       "filter_value": "Belgium",
-      "count": 39,
+      "count": 41,
       "populated": true
     },
     {
@@ -138,7 +138,7 @@
       "slug": "ireland",
       "region": "Western Europe",
       "filter_value": "Ireland",
-      "count": 55,
+      "count": 56,
       "populated": true
     },
     {
@@ -186,7 +186,7 @@
       "slug": "denmark",
       "region": "Northern Europe",
       "filter_value": "Denmark",
-      "count": 18,
+      "count": 19,
       "populated": true
     },
     {
@@ -194,7 +194,7 @@
       "slug": "spain",
       "region": "Southern Europe",
       "filter_value": "Spain",
-      "count": 191,
+      "count": 194,
       "populated": true
     },
     {
@@ -202,7 +202,7 @@
       "slug": "italy",
       "region": "Southern Europe",
       "filter_value": "Italy",
-      "count": 143,
+      "count": 144,
       "populated": true
     },
     {
@@ -210,7 +210,7 @@
       "slug": "portugal",
       "region": "Southern Europe",
       "filter_value": "Portugal",
-      "count": 40,
+      "count": 41,
       "populated": true
     },
     {
@@ -250,7 +250,7 @@
       "slug": "ukraine",
       "region": "Eastern Europe",
       "filter_value": "Ukraine",
-      "count": 74,
+      "count": 75,
       "populated": true
     },
     {
@@ -258,7 +258,7 @@
       "slug": "united-states",
       "region": "North America",
       "filter_value": "United States",
-      "count": 4628,
+      "count": 4758,
       "populated": true
     },
     {
@@ -266,7 +266,7 @@
       "slug": "canada",
       "region": "North America",
       "filter_value": "Canada",
-      "count": 354,
+      "count": 357,
       "populated": true
     },
     {
@@ -274,7 +274,7 @@
       "slug": "mexico",
       "region": "North America",
       "filter_value": "Mexico",
-      "count": 106,
+      "count": 111,
       "populated": true
     },
     {
@@ -282,7 +282,7 @@
       "slug": "brazil",
       "region": "South America",
       "filter_value": "Brazil",
-      "count": 167,
+      "count": 169,
       "populated": true
     },
     {
@@ -298,7 +298,7 @@
       "slug": "chile",
       "region": "South America",
       "filter_value": "Chile",
-      "count": 26,
+      "count": 27,
       "populated": true
     },
     {
@@ -322,7 +322,7 @@
       "slug": "united-arab-emirates",
       "region": "Middle East",
       "filter_value": "United Arab Emirates",
-      "count": 199,
+      "count": 200,
       "populated": true
     },
     {
@@ -330,7 +330,7 @@
       "slug": "saudi-arabia",
       "region": "Middle East",
       "filter_value": "Saudi Arabia",
-      "count": 536,
+      "count": 539,
       "populated": true
     },
     {
