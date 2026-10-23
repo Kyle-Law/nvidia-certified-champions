@@ -5,7 +5,7 @@ from Credly's public earner directory. Pure static frontend (HTML/CSS/JS, no
 build step, no framework) reading flat JSON files as its "backend."
 
 **Currently covers Asia-Pacific, Europe, the Americas, Middle East, and
-Africa (14,200+ people, 48 countries).** The data
+Africa (15,500+ people, 48 countries).** The data
 pipeline and schema aren't APAC-specific — adding another region is just
 adding countries to `data/manifest.json` and running the fetch scripts (see
 [Adding a new country](#adding-a-new-country) below). Nothing about the UI,
@@ -42,53 +42,53 @@ directory with a data pipeline you can re-run to keep it current.
 
 | Region | Country | Status |
 |---|---|---|
-| Southeast Asia | Malaysia | ✅ 108 people loaded |
-| Southeast Asia | Singapore | ✅ 397 people loaded |
-| Southeast Asia | Indonesia | ✅ 76 people loaded |
-| Southeast Asia | Thailand | ✅ 43 people loaded |
-| Southeast Asia | Vietnam | ✅ 149 people loaded |
-| Southeast Asia | Philippines | ✅ 43 people loaded |
-| South Asia | India | ✅ 2,871 people loaded |
-| East Asia | China | ✅ 1,067 people loaded |
-| East Asia | Japan | ✅ 388 people loaded |
-| East Asia | South Korea | ✅ 457 people loaded |
-| Oceania | Australia | ✅ 249 people loaded |
-| Western Europe | United Kingdom | ✅ 467 people loaded |
-| Western Europe | Germany | ✅ 390 people loaded |
-| Western Europe | France | ✅ 281 people loaded |
-| Western Europe | Netherlands | ✅ 104 people loaded |
-| Western Europe | Belgium | ✅ 37 people loaded |
-| Western Europe | Ireland | ✅ 55 people loaded |
-| Western Europe | Austria | ✅ 16 people loaded |
-| Western Europe | Switzerland | ✅ 59 people loaded |
-| Northern Europe | Sweden | ✅ 57 people loaded |
-| Northern Europe | Norway | ✅ 27 people loaded |
-| Northern Europe | Finland | ✅ 21 people loaded |
-| Northern Europe | Denmark | ✅ 18 people loaded |
-| Southern Europe | Spain | ✅ 189 people loaded |
-| Southern Europe | Italy | ✅ 134 people loaded |
-| Southern Europe | Portugal | ✅ 39 people loaded |
-| Southern Europe | Greece | ✅ 15 people loaded |
-| Eastern Europe | Poland | ✅ 125 people loaded |
-| Eastern Europe | Czech Republic | ✅ 32 people loaded |
-| Eastern Europe | Romania | ✅ 35 people loaded |
-| Eastern Europe | Ukraine | ✅ 72 people loaded |
-| North America | United States | ✅ 4,515 people loaded |
-| North America | Canada | ✅ 350 people loaded |
-| North America | Mexico | ✅ 105 people loaded |
-| South America | Brazil | ✅ 165 people loaded |
-| South America | Argentina | ✅ 15 people loaded |
-| South America | Chile | ✅ 23 people loaded |
-| South America | Colombia | ✅ 53 people loaded |
+| Southeast Asia | Malaysia | ✅ 122 people loaded |
+| Southeast Asia | Singapore | ✅ 415 people loaded |
+| Southeast Asia | Indonesia | ✅ 84 people loaded |
+| Southeast Asia | Thailand | ✅ 58 people loaded |
+| Southeast Asia | Vietnam | ✅ 163 people loaded |
+| Southeast Asia | Philippines | ✅ 50 people loaded |
+| South Asia | India | ✅ 3,093 people loaded |
+| East Asia | China | ✅ 1,121 people loaded |
+| East Asia | Japan | ✅ 450 people loaded |
+| East Asia | South Korea | ✅ 483 people loaded |
+| Oceania | Australia | ✅ 269 people loaded |
+| Western Europe | United Kingdom | ✅ 506 people loaded |
+| Western Europe | Germany | ✅ 438 people loaded |
+| Western Europe | France | ✅ 289 people loaded |
+| Western Europe | Netherlands | ✅ 116 people loaded |
+| Western Europe | Belgium | ✅ 49 people loaded |
+| Western Europe | Ireland | ✅ 63 people loaded |
+| Western Europe | Austria | ✅ 17 people loaded |
+| Western Europe | Switzerland | ✅ 61 people loaded |
+| Northern Europe | Sweden | ✅ 69 people loaded |
+| Northern Europe | Norway | ✅ 28 people loaded |
+| Northern Europe | Finland | ✅ 23 people loaded |
+| Northern Europe | Denmark | ✅ 20 people loaded |
+| Southern Europe | Spain | ✅ 200 people loaded |
+| Southern Europe | Italy | ✅ 150 people loaded |
+| Southern Europe | Portugal | ✅ 41 people loaded |
+| Southern Europe | Greece | ✅ 17 people loaded |
+| Eastern Europe | Poland | ✅ 133 people loaded |
+| Eastern Europe | Czech Republic | ✅ 35 people loaded |
+| Eastern Europe | Romania | ✅ 36 people loaded |
+| Eastern Europe | Ukraine | ✅ 78 people loaded |
+| North America | United States | ✅ 5,025 people loaded |
+| North America | Canada | ✅ 379 people loaded |
+| North America | Mexico | ✅ 117 people loaded |
+| South America | Brazil | ✅ 173 people loaded |
+| South America | Argentina | ✅ 18 people loaded |
+| South America | Chile | ✅ 33 people loaded |
+| South America | Colombia | ✅ 56 people loaded |
 | South America | Peru | ✅ 18 people loaded |
-| Middle East | United Arab Emirates | ✅ 197 people loaded |
-| Middle East | Saudi Arabia | ✅ 529 people loaded |
-| Middle East | Israel | ✅ 52 people loaded |
-| Middle East | Turkey | ✅ 61 people loaded |
-| Middle East | Qatar | ✅ 12 people loaded |
-| Africa | South Africa | ✅ 28 people loaded |
-| Africa | Nigeria | ✅ 25 people loaded |
-| Africa | Egypt | ✅ 58 people loaded |
+| Middle East | United Arab Emirates | ✅ 205 people loaded |
+| Middle East | Saudi Arabia | ✅ 555 people loaded |
+| Middle East | Israel | ✅ 57 people loaded |
+| Middle East | Turkey | ✅ 62 people loaded |
+| Middle East | Qatar | ✅ 13 people loaded |
+| Africa | South Africa | ✅ 30 people loaded |
+| Africa | Nigeria | ✅ 27 people loaded |
+| Africa | Egypt | ✅ 61 people loaded |
 | Africa | Kenya | ✅ 7 people loaded |
 
 "Region" here is just organizational metadata carried in

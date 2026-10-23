@@ -1,6 +1,6 @@
 {
   "region_name": "Asia-Pacific, Europe, Americas, Middle East, Africa",
-  "generated_at": "2026-10-19",
+  "generated_at": "2026-10-23",
   "source": "Credly NVIDIA Earner Directory (public API, filtered by location)",
   "organization_id": "be046724-f99a-4626-922e-425eca1efa2e",
   "note": "count is the total earner count reported by Credly at generation time. populated=true means the per-person records are checked into data/countries/. populated=false means only the count is known so far — run scripts/fetch-data.mjs to pull the full list.",
@@ -58,7 +58,7 @@
       "slug": "india",
       "region": "South Asia",
       "filter_value": "India",
-      "count": 3095,
+      "count": 3093,
       "populated": true
     },
     {
@@ -234,7 +234,7 @@
       "slug": "czech-republic",
       "region": "Eastern Europe",
       "filter_value": "Czech Republic",
-      "count": 36,
+      "count": 35,
       "populated": true
     },
     {
@@ -258,7 +258,7 @@
       "slug": "united-states",
       "region": "North America",
       "filter_value": "United States",
-      "count": 5022,
+      "count": 5025,
       "populated": true
     },
     {
@@ -266,7 +266,7 @@
       "slug": "canada",
       "region": "North America",
       "filter_value": "Canada",
-      "count": 378,
+      "count": 379,
       "populated": true
     },
     {
